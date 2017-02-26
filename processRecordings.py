@@ -40,19 +40,9 @@ def main(argv):
                 if file.startswith(dirName.split('/')[-1]) & file.endswith(".dat"): # check that a .dat exists in this folder and matches the directory name
                     os.chdir(os.path.abspath(dirName))
                     xmlfile = glob.glob("*xml")
-                    # check that the shank directories don't already exist,
-                    # this number should be the number of shanks for a
-                    # recording
 
-                    if len(subdirList) < numShanks:
-                        # this section needs to be abtracted to the number of
-                        # shanks instead of a hard number...
-                        print(os.path.abspath(dirName))
-                        matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'/zpool/Dropbox/code\')); \
-                            makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
-                        # generate folder structure and .prm/.prb files
-                        subprocess.call(matlab_command[0], shell=True)
-                        time.sleep(10)  # let the process get going...
+                    checkShankDirsExist(subdirList,dirName,numShanks,xmlfile) # check if shank dirs exist and make them if they don't
+
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered
@@ -62,6 +52,7 @@ def main(argv):
                                     # double check there's a prm file
                                     if fnmatch.fnmatch(file, '*.prm'):
                                         checkJobLimits(cpuLimit,numJobs,waittime) # you shall not pass... until other jobs have finished.
+
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')): # check that spike extraction hasn't been done
                                             toRun = ['nohup klusta ' + file + ' &'] # create the klusta command to run
                                             # run klusta job
@@ -72,7 +63,7 @@ def main(argv):
                                             f.close()
                                             print(['starting... ' + root +  toRun[0]])
                                             # let one process start before
-                                            # generating another
+                                            # generating another 
                                             time.sleep(waittime)
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')): # check if there is a log file 
                                             status = getFolderStatus;
