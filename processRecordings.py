@@ -54,7 +54,7 @@ def main(argv):
                                     if fnmatch.fnmatch(file, '*.prm'):
                                         checkJobLimits(cpuLimit,numJobs,waittime) # you shall not pass... until other jobs have finished.
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')): # check that spike extraction hasn't been done
-                                            startJob(root,file,waittime)
+                                            startJob(root,file)
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')): # check if there is a log file 
                                             status = getFolderStatus();
                                             print(status)
@@ -150,7 +150,7 @@ def checkBehaviorTracking():
     # checks if there is behavioral tracking data that needs to be synced to ephys data
     print()
 
-def startJob(root,file):
+def startJob(root,file):  # starts the spike extraction/clustering process using
     toRun = ['nohup klusta ' + file + ' &'] # create the klusta command to run
     # run klusta job
     subprocess.call(toRun[0], shell=True)
@@ -161,6 +161,16 @@ def startJob(root,file):
     print(['starting... ' + root +  toRun[0]])
     time.sleep(10) # let one process start before generating another 
 
+def copyToSSD(ssdCompName,root,shank,status): # copies finished shanks to a SSD for manual spike sorting
+    if fnmatch.fnmatch(status,'autoclustered') and socket.gethostname() == 'hyperion' and os.path.exists("autoclustering.out"): 
+        # check that Autoclustering is done
+        print('copying ' + root + '/' + shank +  ' to SSD and removing progress logfile..')
+        os.remove("autoclustering.out")
+        shutil.copytree(root + '/' + shank,'/home/david/to_cut/autoclustered/' + \
+        root.split('/')[-2] + '/' + root.split('/')[-1] + '/' + shank)
+        # copy files to SSD
+        with open("nohup.out", "a") as myfile:
+            myfile.write("copied to SSD\n")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
