@@ -18,14 +18,15 @@ numShanks =  10 # set this value to the number of shanks to cluster (adding ref 
 
 
 def main(argv):
-    total = len(sys.argv)
-    if total > 1:
+    repoPath = '/'.join(sys.argv[0].split('/')[:-1])
+    print('repo path is : ' + repoPath)
+    if len(sys.argv) > 1:
         # time interval, in seconds, in between starting new
         # extraction/clustering jobs
         waittime = float(sys.argv[1])
         numJobs = float(sys.argv[2])  # max number of jobs to run at once
         cpuLimit = float(sys.argv[3])
-        if total > 4:
+        if len(sys.argv) > 4:
             dataFolder = sys.argv[4]
     else:
         waittime = 600
@@ -63,7 +64,7 @@ def main(argv):
                                                 print('starting autoclustering on ' + shank + ' ..')
                                                 with open("autoclustering.out", "wb") as myfile:
                                                     myfile.write("autoclustering in progress\n")
-                                                runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'/zpool/Dropbox/code\'));'\
+                                                runAutoClust = ['matlab -nodesktop -r "addpath(genpath(' + repoPath + '));'\
                                                 ' ; AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
                                                 subprocess.check_call(runAutoClust, shell=True) # making this a check_call forces matlab to complete before going to the next job (only one autoclustering job runs at a time)
                                                 # run Autoclustering

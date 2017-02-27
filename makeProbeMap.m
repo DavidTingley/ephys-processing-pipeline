@@ -11,7 +11,7 @@ function [] = makeProbeMap(folder, xmlfile)
 parameters = LoadParameters([folder '/' xmlfile]);
 warning off
 
-for shank = 1:length(parameters.spikeGroups.groups)
+for shank = 1:parameters.nElecGps
     
     % make a folder for each directory
     mkdir([folder '/' num2str(shank)]);
