@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: klustaviewa
+Version: 0.3.0
+Summary: Spike sorting software suite.
+Home-page: https://klusta-team.github.io
+Author: Cyrille Rossant
+Author-email: rossant@github
+License: LICENSE.md
+Description: Spike sorting graphical interface.
+Platform: UNKNOWN

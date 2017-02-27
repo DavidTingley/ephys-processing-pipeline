@@ -4,5 +4,5 @@ This is a set of tools used for the semi-automated processing of raw ephys recor
 
 -spike extraction (spikedetekt)
 -automated spike sorting (klusta-3.0)
--LFP downsampling and extraction
--synchronization of behavioral tracking data and ephys data 
+-LFP downsampling and extraction (TODO)
+-synchronization of behavioral tracking data and ephys data (LINK TO BUZCODE REPO)

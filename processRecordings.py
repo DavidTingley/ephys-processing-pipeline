@@ -52,21 +52,11 @@ def main(argv):
                                     # double check there's a prm file
                                     if fnmatch.fnmatch(file, '*.prm'):
                                         checkJobLimits(cpuLimit,numJobs,waittime) # you shall not pass... until other jobs have finished.
-
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')): # check that spike extraction hasn't been done
-                                            toRun = ['nohup klusta ' + file + ' &'] # create the klusta command to run
-                                            # run klusta job
-                                            subprocess.call(toRun[0], shell=True)
-                                            # add something here to write the computer name to the log file
-                                            f = open('complog.log', 'w')
-                                            f.write(socket.gethostname())
-                                            f.close()
-                                            print(['starting... ' + root +  toRun[0]])
-                                            # let one process start before
-                                            # generating another 
-                                            time.sleep(waittime)
+                                            startJob(root,file,waittime)
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')): # check if there is a log file 
-                                            status = getFolderStatus;
+                                            status = getFolderStatus();
+                                            print(status)
                                             if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):    
                                                 # check Klustakwik has finished
                                                 print(os.getcwd())
@@ -130,7 +120,7 @@ def checkJobLimits(cpuLimit,numJobs,waittime):
         # wait until resources are available
         time.sleep(waittime)
         cpu = psutil.cpu_percent(2)
-        mem = psutil.virtual_memory()  # samples virtual memory usage
+    mem = psutil.virtual_memory()  # samples virtual memory usage
     while mem.percent > 90:
         print('current memory usage: %f' % mem.percent)
         # wait until resources are
@@ -158,6 +148,18 @@ def checkShankDirsExist(subdirList,dirName,numShanks,xmlfile):
 def checkBehaviorTracking():
     # checks if there is behavioral tracking data that needs to be synced to ephys data
     print()
+
+def startJob(root,file):
+    toRun = ['nohup klusta ' + file + ' &'] # create the klusta command to run
+    # run klusta job
+    subprocess.call(toRun[0], shell=True)
+    # add something here to write the computer name to the log file
+    f = open('complog.log', 'w')
+    f.write(socket.gethostname())
+    f.close()
+    print(['starting... ' + root +  toRun[0]])
+    time.sleep(10) # let one process start before generating another 
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

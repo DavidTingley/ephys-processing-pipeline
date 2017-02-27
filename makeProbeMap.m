@@ -72,7 +72,7 @@ for shank = 1:length(parameters.spikeGroups.groups)
     fclose(fid); 
     
     % write .prm file as well
-    fid = fopen('/zpool/generic_spikedetekt.prm');
+    fid = fopen('generic_spikedetekt.prm');
     i = 1;
     tline = fgetl(fid);
     generic{i} = tline;

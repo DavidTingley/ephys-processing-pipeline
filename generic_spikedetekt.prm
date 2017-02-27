@@ -1,7 +1,5 @@
 """Contain default parameters."""
 
-
-
 NCHANNELS = 96
 sample_rate = 20000.
 NBITS = 16
