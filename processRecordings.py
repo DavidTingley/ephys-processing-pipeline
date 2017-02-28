@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import psutil
 import time
 import sys
@@ -10,28 +9,23 @@ import fnmatch
 import socket
 import shutil
 
-
-dataFolder = '/zpool/tingley/DT5'  # directory with recording subdirectories
-# dataFolder = '/mnt/packrat/userdirs/david/zpool1/DT6'#  # directory with recording subdirectorie
-# dataFolder = '/zpool/tingley/DT4'  # directory with recording subdirectorie
-numShanks =  10 # set this value to the number of shanks to cluster (adding ref sites as shanks)
-
-
 def main(argv):
     repoPath = '/'.join(sys.argv[0].split('/')[:-1])
     print('repo path is : ' + repoPath)
-    if len(sys.argv) > 1:
-        # time interval, in seconds, in between starting new
-        # extraction/clustering jobs
-        waittime = float(sys.argv[1])
-        numJobs = float(sys.argv[2])  # max number of jobs to run at once
-        cpuLimit = float(sys.argv[3])
-        if len(sys.argv) > 4:
-            dataFolder = sys.argv[4]
+    if len(sys.argv) == 5:
+        dataFolder = sys.argv[1]
+        numShanks = float(sys.argv[2])
+        waittime = float(sys.argv[3]) # time interval, in seconds, in between starting new extraction/clustering jobs
+        numJobs = float(sys.argv[4])  # max number of jobs to run at once
+        cpuLimit = float(sys.argv[5]) # max cpu usage allowed before starting new jobs
     else:
         waittime = 600
         numJobs = 3
         cpuLimit = 90
+        dataFolder = '/zpool/tingley/DT5'  # directory with recording subdirectories
+        # dataFolder = '/mnt/packrat/userdirs/david/zpool1/DT6'#  # directory with recording subdirectorie
+        # dataFolder = '/zpool/tingley/DT4'  # directory with recording subdirectorie
+        numShanks =  10 # set this value to the number of shanks to cluster (adding ref sites as shanks)
 
     while True:
         os.chdir(dataFolder)
@@ -47,17 +41,15 @@ def main(argv):
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered
-                            if not fnmatch.fnmatch(shank, '_klust*') and len(shank) <= 2:
+                            if not fnmatch.fnmatch(shank, '_klust*'):
                                 os.chdir(shank) # now in shank directory
                                 for file in os.listdir('.'):
-                                    # double check there's a prm file
-                                    if fnmatch.fnmatch(file, '*.prm'):
+                                    if fnmatch.fnmatch(file, '*.prm'): # double check there's a prm file
                                         checkJobLimits(cpuLimit,numJobs,waittime) # you shall not pass... until other jobs have finished.
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')): # check that spike extraction hasn't been done
                                             startJob(root,file)
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')): # check if there is a log file 
                                             status = getFolderStatus();
-                                            print(status)
                                             if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):    
                                                 # check Klustakwik has finished
                                                 print(os.getcwd())
@@ -148,6 +140,7 @@ def checkShankDirsExist(subdirList,dirName,numShanks,xmlfile):
 
 def checkBehaviorTracking():
     # checks if there is behavioral tracking data that needs to be synced to ephys data
+    # eventually this will call Process_ConvertOptitrack2Pos.m or it's replacement
     print()
 
 def startJob(root,file):  # starts the spike extraction/clustering process using
