@@ -9,6 +9,11 @@ import fnmatch
 import socket
 import shutil
 
+# TODO
+# - add behavior tracking extraction
+# - add LFP extraction
+# - add SSD copying functionality
+
 def main(argv):
     repoPath = '/'.join(sys.argv[0].split('/')[:-1])
     print('repo path is : ' + repoPath)
@@ -23,8 +28,6 @@ def main(argv):
         numJobs = 3
         cpuLimit = 90
         dataFolder = '/zpool/tingley/DT5'  # directory with recording subdirectories
-        # dataFolder = '/mnt/packrat/userdirs/david/zpool1/DT6'#  # directory with recording subdirectorie
-        # dataFolder = '/zpool/tingley/DT4'  # directory with recording subdirectorie
         numShanks =  10 # set this value to the number of shanks to cluster (adding ref sites as shanks)
 
     while True:
@@ -35,7 +38,6 @@ def main(argv):
                 if file.startswith(dirName.split('/')[-1]) & file.endswith(".dat"): # check that a .dat exists in this folder and matches the directory name
                     os.chdir(os.path.abspath(dirName))
                     xmlfile = glob.glob("*xml")
-
                     checkShankDirsExist(subdirList,dirName,numShanks,xmlfile) # check if shank dirs exist and make them if they don't
 
                     for root, shankdirs, defaultFiles in os.walk(dirName):
@@ -68,8 +70,7 @@ def main(argv):
                                                     root.split('/')[-2] + '/' + root.split('/')[-1] + '/' + shank)
                                                 # copy files to SSD
                                                 with open("nohup.out", "a") as myfile:
-                                                    myfile.write("copied to SSD\n")
-                                                # edit nohup.out to new status
+                                                    myfile.write("copied to SSD\n") # edit nohup.out to new status
                                 os.chdir('..')
                                 # return to recording directory
         time.sleep(waittime)
