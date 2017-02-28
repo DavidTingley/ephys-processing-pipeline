@@ -8,6 +8,7 @@ import glob
 import fnmatch
 import socket
 import shutil
+import argparse
 
 # TODO
 # - add behavior tracking extraction
@@ -16,25 +17,16 @@ import shutil
 ssdDirectory = '/home/david/to_cut/autoclustered/'
 ssdCompName = 'hyperion'
 
-
-def main(argv):
+def main(args):
     repoPath = '/'.join(sys.argv[0].split('/')[:-1])
     print('repo path is : ' + repoPath)
-    if len(sys.argv) == 5:
-        dataFolder = sys.argv[1]
-        numShanks = float(sys.argv[2])
-        # time interval, in seconds, in between starting new
-        # extraction/clustering jobs
-        waittime = float(sys.argv[3])
-        numJobs = float(sys.argv[4])  # max number of jobs to run at once
-        # max cpu usage allowed before starting new jobs
-        cpuLimit = float(sys.argv[5])
-    else:
-        waittime = 600
-        numJobs = 3
-        cpuLimit = 90
-        dataFolder = os.getcwd()  # directory with recording subdirectories
-        numShanks = 10 # set this value to the number of shanks (spike groups) to cluster
+
+    dataFolder = args.dataFolder # directory with recording subdirectories
+    numShanks = args.numShanks# set this value to the number of shanks (spike groups) to cluster
+    waitTime = args.waitTime # time interval, in seconds, in between starting new extraction/clustering jobs
+    numJobs = args.numJobs# max number of jobs to run at once
+    cpuLimit = args.cpuLimit  # max cpu usage allowed before starting new jobs
+
     while True:  # this is the song that never ends....
         os.chdir(dataFolder)
         print('searching for unprocessed recordings...')
@@ -49,15 +41,15 @@ def main(argv):
                     checkShankDirsExist(subdirList, dirName, numShanks, xmlfile)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
-                            # if the shank hasn't already been clustered
-                            if not fnmatch.fnmatch(shank, '_klust*'):
+                            # if the shank hasn't already been clustered and its directory name is less than 3 characters
+                            if not fnmatch.fnmatch(shank, '_klust*') and len(shank) < 3:
                                 os.chdir(shank)  # now in shank directory
                                 for file in os.listdir('.'):
                                     # double check there's a prm file
                                     if fnmatch.fnmatch(file, '*.prm'):
                                         # you shall not pass... until other
                                         # jobs have finished.
-                                        checkJobLimits(cpuLimit, numJobs, waittime)
+                                        checkJobLimits(cpuLimit, numJobs, waitTime)
                                         # check that spike extraction hasn't
                                         # been done
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')):
@@ -69,7 +61,7 @@ def main(argv):
                                             copyToSSD(
                                                 ssdCompName, ssdDirectory, root, shank, status)
                                 os.chdir('..')  # return to recording directory
-        time.sleep(waittime)  # it goes on and on my friends...
+        time.sleep(waitTime)  # it goes on and on my friends...
 
 
 def getCurrentJobs():
@@ -107,23 +99,23 @@ def getFolderStatus():
     return status
 
 
-def checkJobLimits(cpuLimit, numJobs, waittime):
+def checkJobLimits(cpuLimit, numJobs, waitTime):
     cpu = psutil.cpu_percent(2)
     while cpu > cpuLimit:
         print('current cpu usage: %f' % cpu)
         # wait until resources are available
-        time.sleep(waittime)
+        time.sleep(waitTime)
         cpu = psutil.cpu_percent(2)
     mem = psutil.virtual_memory()  # samples virtual memory usage
     while mem.percent > 90:
         print('current memory usage: %f' % mem.percent)
         # wait until resources are
         # available
-        time.sleep(waittime)
+        time.sleep(waitTime)
         mem = psutil.virtual_memory()
     while getCurrentJobs() >= numJobs:
         print('waiting for %f jobs to finish...' % getCurrentJobs())
-        time.sleep(waittime)
+        time.sleep(waitTime)
 
 
 def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile):
@@ -141,11 +133,15 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile):
     return True
 
 
-def checkBehaviorTracking():
+def extractBehaviorTracking():
     # checks if there is behavioral tracking data that needs to be synced to ephys data
-    # eventually this will call Process_ConvertOptitrack2Pos.m or it's
+    # eventually this will call Process_ConvertOptitrack2Behav.m or it's
     # replacement
-    print()
+    print('this function is currently empty....')
+
+def extractLFP():
+    # extracts LFP from raw *.dat file and saves to current directory
+    print('this function is currently empty....')
 
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using
@@ -187,4 +183,17 @@ def copyToSSD(ssdCompName, ssdDirectory, root, shank, status): # copies finished
             myfile.write("copied to SSD\n")
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    parser = argparse.ArgumentParser(description='This function is designed to run '\
+                                         'in the background on a data processing '\
+                                         'machine.  It constantly searches through '\
+                                         'a given directory [arg1] and starts extract,'\
+                                         ' clustering, and other processing jobs')
+    parser.add_argument('dataFolder',type=str,default=os.getcwd(),help='the folder with all of your recordings in subdirectories')
+    parser.add_argument('numShanks',type=float,default=10,help='number of shanks to process')
+    parser.add_argument('-waitTime',type=int,default=300,help='time (seconds) to wait before searching for more jobs [default = 300]')
+    parser.add_argument('-numJobs',type=float,default=4,help='number of jobs to run simultaneously [default = 4]')
+    parser.add_argument('-cpuLimit',type=float,default=80,help='cpu usage limit [default = 80]')
+    parser.add_argument('-repoPath',type=str,default=sys.argv[0],help='location of ephys-processing repository')
+    args = parser.parse_args()
+    print(args)
+    main(args,sys)
