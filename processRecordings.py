@@ -34,9 +34,7 @@ def main(argv):
         numJobs = 3
         cpuLimit = 90
         dataFolder = os.getcwd()  # directory with recording subdirectories
-        # set this value to the number of shanks to cluster (adding ref sites
-        # as shanks)
-        numShanks = 10
+        numShanks = 10 # set this value to the number of shanks (spike groups) to cluster
     while True:  # this is the song that never ends....
         os.chdir(dataFolder)
         print('searching for unprocessed recordings...')
@@ -98,8 +96,7 @@ def getCurrentJobs():
 
 def getFolderStatus():
     with open('nohup.out', "rb") as f:
-        # checks that file has more than 1 byte written to it
-        if os.path.getsize('nohup.out') > 200:
+        if os.path.getsize('nohup.out') > 200: # checks that file has more than 1 byte written to it
             f.seek(-2, 2)             # Jump to the second last byte.
             while f.read(1) != "\n":  # Until EOL is found...
                 # ...jump back the read byte plus one more.
