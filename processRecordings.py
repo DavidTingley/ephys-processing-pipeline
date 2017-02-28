@@ -34,9 +34,7 @@ def main(argv):
         numJobs = 3
         cpuLimit = 90
         dataFolder = os.getcwd()  # directory with recording subdirectories
-        # set this value to the number of shanks to cluster (adding ref sites
-        # as shanks)
-        numShanks = 10
+        numShanks = 10 # set this value to the number of shanks (spike groups) to cluster
     while True:  # this is the song that never ends....
         os.chdir(dataFolder)
         print('searching for unprocessed recordings...')
