@@ -67,8 +67,7 @@ def main(argv):
                                         # check if there is a log file
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
                                             status = getFolderStatus()
-                                            startAutoClustering(
-                                                shank, dirname, status)
+                                            startAutoClustering(shank, dirName,repoPath,status)
                                             copyToSSD(
                                                 ssdCompName, ssdDirectory, root, shank, status)
                                 os.chdir('..')  # return to recording directory
@@ -98,8 +97,7 @@ def getCurrentJobs():
 
 def getFolderStatus():
     with open('nohup.out', "rb") as f:
-        # checks that file has more than 1 byte written to it
-        if os.path.getsize('nohup.out') > 200:
+        if os.path.getsize('nohup.out') > 200: # checks that file has more than 1 byte written to it
             f.seek(-2, 2)             # Jump to the second last byte.
             while f.read(1) != "\n":  # Until EOL is found...
                 # ...jump back the read byte plus one more.
@@ -164,7 +162,7 @@ def startClusterJob(root, file):  # starts the spike extraction/clustering proce
     time.sleep(10)  # let one process start before generating another
 
 
-def startAutoClustering(shank, dirname):
+def startAutoClustering(shank, dirName,repoPath,status):
     if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
         # check Klustakwik has finished
         print(os.getcwd())
