@@ -119,18 +119,22 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
 
 
 def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile):
-    subdirList = [d for d in subdirList if not '201' in d if not
-                  'extras' in d if not 'temp' in d]  # removes folders that are not shank folders
-    if len(subdirList) < numShanks:
-        # this section needs to be abtracted to the number of
-        # shanks instead of a hard number...
-        print(os.path.abspath(dirName))
-        matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'/zpool/Dropbox/code\')); \
-            makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
-        # generate folder structure and .prm/.prb files
-        subprocess.call(matlab_command[0], shell=True)
-        time.sleep(10)  # let the process get going...
-    return True
+    try:
+        subdirList = [d for d in subdirList if not '201' in d if not
+                      'extras' in d if not 'temp' in d]  # removes folders that are not shank folders
+        if len(subdirList) < numShanks:
+            # this section needs to be abtracted to the number of
+            # shanks instead of a hard number...
+            print(os.path.abspath(dirName))
+            matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'/zpool/Dropbox/code\')); \
+                makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
+            # generate folder structure and .prm/.prb files
+            subprocess.call(matlab_command[0], shell=True)
+            time.sleep(10)  # let the process get going...
+        return True
+    except:
+        print('errorrr')
+        return False
 
 
 def extractBehaviorTracking():
@@ -157,21 +161,18 @@ def startClusterJob(root, file):  # starts the spike extraction/clustering proce
 
 
 def startAutoClustering(shank, dirName,repoPath,status):
-    try:
-        if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
-            # check Klustakwik has finished
-            print(os.getcwd())
-            print('starting autoclustering on ' + shank + ' ..')
-            with open("autoclustering.out", "wb") as myfile:
-                myfile.write("autoclustering in progress\n")
-            runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
-                            ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
-            # making this a check_call forces matlab to complete before going to
-            # the next job (only one autoclustering job runs at a time)
-            subprocess.check_call(runAutoClust, shell=True)
-            # run Autoclustering
-    except:
-        print('there was an error..')
+    if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
+        # check Klustakwik has finished
+        print(os.getcwd())
+        print('starting autoclustering on ' + shank + ' ..')
+        with open("autoclustering.out", "wb") as myfile:
+            myfile.write("autoclustering in progress\n")
+        runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
+                        ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
+        # making this a check_call forces matlab to complete before going to
+        # the next job (only one autoclustering job runs at a time)
+        subprocess.check_call(runAutoClust, shell=True)
+
 
 
 def copyToSSD(ssdCompName, ssdDirectory, root, shank, status): # copies finished shanks to a SSD for manual spike sorting
