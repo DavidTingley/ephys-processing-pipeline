@@ -157,18 +157,22 @@ def startClusterJob(root, file):  # starts the spike extraction/clustering proce
 
 
 def startAutoClustering(shank, dirName,repoPath,status):
-    if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
-        # check Klustakwik has finished
-        print(os.getcwd())
-        print('starting autoclustering on ' + shank + ' ..')
-        with open("autoclustering.out", "wb") as myfile:
-            myfile.write("autoclustering in progress\n")
-        runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
-                        ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
-        # making this a check_call forces matlab to complete before going to
-        # the next job (only one autoclustering job runs at a time)
-        subprocess.check_call(runAutoClust, shell=True)
-        # run Autoclustering
+    try:
+        if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
+            # check Klustakwik has finished
+            print(os.getcwd())
+            print('starting autoclustering on ' + shank + ' ..')
+            with open("autoclustering.out", "wb") as myfile:
+                myfile.write("autoclustering in progress\n")
+            runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
+                            ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
+            # making this a check_call forces matlab to complete before going to
+            # the next job (only one autoclustering job runs at a time)
+            subprocess.check_call(runAutoClust, shell=True)
+            # run Autoclustering
+    except:
+        print('there was an error..')
+
 
 def copyToSSD(ssdCompName, ssdDirectory, root, shank, status): # copies finished shanks to a SSD for manual spike sorting
     if fnmatch.fnmatch(status, 'autoclustered') and socket.gethostname() == 'hyperion' and os.path.exists("autoclustering.out"):
