@@ -3,7 +3,11 @@
 
 wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
 
-sh Miniconda-3.7.0-Linux-x86_64.sh
+chmod +x Miniconda-3.7.0-Linux-x86_64.sh
+
+./Miniconda-3.7.0-Linux-x86_64.sh
+
+source ~/.bashrc
 
 conda create -n klusta python=2.7 --yes
 
