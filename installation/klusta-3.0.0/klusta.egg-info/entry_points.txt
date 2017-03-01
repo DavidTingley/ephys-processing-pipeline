@@ -1,0 +1,3 @@
+[console_scripts]
+klusta = klusta.launch:main
+
