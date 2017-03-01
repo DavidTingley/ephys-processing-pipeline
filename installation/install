@@ -19,7 +19,7 @@ source activate klusta
 
 pip install pyopengl
 
-cd klustaviewa-3.0
+cd klustaviewa-0.3.0
 
 python setup.py install
 
