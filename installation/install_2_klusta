@@ -1,5 +1,6 @@
 # copy and paste the below text to install this pipeline
 
+source ~/.bashrc
 
 conda create -n klusta python=2.7 --yes
 
@@ -15,15 +16,15 @@ source activate klusta
 
 cd klustakwik2
 
-python setup.py install > kk2_legacy_install.log
+python setup.py install 
 
 cd ..
 
 cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
 
-cd klustaviewa-3.0.0
+cd klustaviewa-0.3.0
 
-python setup.py install > klustaviewa_install.log
+python setup.py install
 
 cd ..
 

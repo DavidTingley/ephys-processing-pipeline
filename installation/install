@@ -1,5 +1,14 @@
 # copy and paste the below text to install this pipeline
 
+wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
+
+chmod +x Miniconda-3.7.0-Linux-x86_64.sh
+
+./Miniconda-3.7.0-Linux-x86_64.sh
+
+source ~/.bashrc
+
+reset
 
 conda create -n klusta python=2.7 --yes
 
@@ -15,15 +24,15 @@ source activate klusta
 
 cd klustakwik2
 
-python setup.py install > kk2_legacy_install.log
+python setup.py install 
 
 cd ..
 
 cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
 
-cd klustaviewa-3.0.0
+cd klustaviewa-0.3.0
 
-python setup.py install > klustaviewa_install.log
+python setup.py install
 
 cd ..
 
