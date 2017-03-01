@@ -23,6 +23,8 @@ cd klustakwik2
 
 python setup.py install
 
+cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
+
 cd ..
 
 cd klustaviewa-0.3.0
