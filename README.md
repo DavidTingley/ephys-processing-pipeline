@@ -10,8 +10,31 @@ This is a set of tools used for the semi-automated processing of raw ephys recor
 
 INSTALL
 
-`cd ephys-processing-pipeline/installatin`
+`cd ephys-processing-pipeline/installation`
 
 `./install`
 
 Yes and enter to all queries
+
+
+HOW TO RUN PIPELINE
+
+usage: processRecordings.py [-h] [-waitTime WAITTIME] [-numJobs NUMJOBS]
+                            [-cpuLimit CPULIMIT] [-repoPath REPOPATH]
+                            dataFolder numShanks
+
+This function is designed to run in the background on a data processing
+machine. It constantly searches through a given directory [arg1] and starts
+extract, clustering, and other processing jobs
+
+positional arguments:
+  dataFolder          the folder with all of your recordings in subdirectories
+  numShanks           number of shanks to process
+
+optional arguments:
+  -h, --help          show this help message and exit
+  -waitTime WAITTIME  time (seconds) to wait before searching for more jobs
+                      [default = 300]
+  -numJobs NUMJOBS    number of jobs to run simultaneously [default = 4]
+  -cpuLimit CPULIMIT  cpu usage limit [default = 80]
+  -repoPath REPOPATH  location of ephys-processing repository
