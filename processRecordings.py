@@ -38,7 +38,7 @@ def main(args):
                     os.chdir(os.path.abspath(dirName))
                     xmlfile = glob.glob("*xml")
                     # check if shank dirs exist and make them if they don't
-                    checkShankDirsExist(subdirList, dirName, numShanks, xmlfile)
+                    checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered and its directory name is less than 3 characters
@@ -118,7 +118,7 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
         time.sleep(waitTime)
 
 
-def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile):
+def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
     try:
         subdirList = [d for d in subdirList if not '201' in d if not
                       'extras' in d if not 'temp' in d]  # removes folders that are not shank folders
@@ -126,7 +126,7 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile):
             # this section needs to be abtracted to the number of
             # shanks instead of a hard number...
             print(os.path.abspath(dirName))
-            matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'/zpool/Dropbox/code\')); \
+            matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\')); \
                 makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
             # generate folder structure and .prm/.prb files
             subprocess.call(matlab_command[0], shell=True)

@@ -4,4 +4,4 @@ Autoclustering functions from (https://github.com/buzsakilab/buzcode) must be on
 
 miniconda/klusta (check installation directory to set this up)
 
-MATLAB 2016
+MATLAB 2016 must be installed and callable as `matlab` in the terminal
