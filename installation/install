@@ -21,7 +21,7 @@ pip install pyopengl
 
 cd klustakwik2
 
-python setup.py install
+python setup.py install > kk2_legacy_install.log
 
 cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
 
@@ -29,6 +29,6 @@ cd ..
 
 cd klustaviewa-0.3.0
 
-python setup.py install
+python setup.py install > klustaviewa_install.log
 
 
