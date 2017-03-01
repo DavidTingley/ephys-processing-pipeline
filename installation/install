@@ -7,6 +7,8 @@ chmod +x Miniconda-3.7.0-Linux-x86_64.sh
 
 ./Miniconda-3.7.0-Linux-x86_64.sh
 
+sleep 1
+
 source ~/.bashrc
 
 conda create -n klusta python=2.7 --yes
