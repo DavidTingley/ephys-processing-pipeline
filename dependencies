@@ -3,3 +3,5 @@ MATLAB
 Autoclustering functions from (https://github.com/buzsakilab/buzcode) must be on the MATLAB path
 
 miniconda/klusta (check installation directory to set this up)
+
+MATLAB 2016

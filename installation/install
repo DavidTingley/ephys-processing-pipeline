@@ -1,4 +1,5 @@
 # copy and paste the below text to install this pipeline
+# tested on linux 16.04 with no prior installations of miniconda/klusta
 
 wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
 
@@ -12,7 +13,7 @@ reset
 
 conda create -n klusta python=2.7 --yes
 
-conda install -n klusta scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes
+conda install -n klusta psutil scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes
 
 conda install -n klusta numpy=1.8 --yes
 

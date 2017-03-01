@@ -20,6 +20,7 @@ Yes and enter to all queries
 HOW TO RUN PIPELINE
 
 run from within /ephys-processing-pipeline folder
+
 `python processRecordings.py /path/to/recording/folder numShanks`
 
 usage: processRecordings.py [-h] [-waitTime WAITTIME] [-numJobs NUMJOBS]
