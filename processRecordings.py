@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/home/david/miniconda/envs/klusta/bin/python
+
 import psutil
 import time
-import sys
 import subprocess
 import os
 import glob
@@ -163,8 +163,8 @@ def startAutoClustering(shank, dirName,repoPath,status):
         print('starting autoclustering on ' + shank + ' ..')
         with open("autoclustering.out", "wb") as myfile:
             myfile.write("autoclustering in progress\n")
-        runAutoClust = ['matlab -nodesktop -r "addpath(genpath(' + repoPath + '));'
-                        ' ; AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
+        runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
+                        ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
         # making this a check_call forces matlab to complete before going to
         # the next job (only one autoclustering job runs at a time)
         subprocess.check_call(runAutoClust, shell=True)
@@ -193,7 +193,6 @@ if __name__ == "__main__":
     parser.add_argument('-waitTime',type=int,default=300,help='time (seconds) to wait before searching for more jobs [default = 300]')
     parser.add_argument('-numJobs',type=float,default=4,help='number of jobs to run simultaneously [default = 4]')
     parser.add_argument('-cpuLimit',type=float,default=100,help='cpu usage limit [default = 80]')
-    parser.add_argument('-repoPath',type=str,default=sys.argv[0],help='location of ephys-processing repository')
+    parser.add_argument('-repoPath',type=str,default=os.getcwd(),help='location of ephys-processing repository')
     args = parser.parse_args()
-    print(args)
     main(args)
