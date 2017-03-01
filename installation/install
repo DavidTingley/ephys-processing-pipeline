@@ -23,11 +23,17 @@ pip install pyopengl
 
 source activate klusta
 
-python klustakwik2/setup.py install > kk2_legacy_install.log
+cd klustakwik2
+
+python setup.py install > kk2_legacy_install.log
+
+cd ..
 
 cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
 
+cd klustaviewa-3.0.0
 
-python klustaviewa-3.0.0/setup.py install > klustaviewa_install.log
+python setup.py install > klustaviewa_install.log
 
+cd ..
 
