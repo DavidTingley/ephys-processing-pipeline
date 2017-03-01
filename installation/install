@@ -1,40 +1,33 @@
 # copy and paste the below text to install this pipeline
 
 
-# wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
+wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
 
-# chmod +x Miniconda-3.7.0-Linux-x86_64.sh
+chmod +x Miniconda-3.7.0-Linux-x86_64.sh
 
-# ./Miniconda-3.7.0-Linux-x86_64.sh
-
-# sleep 1
-
-# source ~/.bashrc
-
-# conda create -n klusta python=2.7 --yes
-
-# conda install -n klusta scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes
-
-# conda install -n klusta numpy=1.8 --yes
-
-# source activate klusta
-
-# pip install pyopengl
-
-cd klustakwik2
+./Miniconda-3.7.0-Linux-x86_64.sh
 
 sleep 1
 
+source ~/.bashrc
+
+conda create -n klusta python=2.7 --yes
+
+conda install -n klusta scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes
+
+conda install -n klusta numpy=1.8 --yes
+
 source activate klusta
 
-python setup.py install > kk2_legacy_install.log
+pip install pyopengl
+
+source activate klusta
+
+python klustakwik2/setup.py install > kk2_legacy_install.log
 
 cp ~/miniconda/envs/klusta/bin/kk2_legacy ~/miniconda/envs/klusta/bin/klustakwik 
 
-cd ..
 
-cd klustaviewa-0.3.0
-
-python setup.py install > klustaviewa_install.log
+python klustaviewa-3.0.0/setup.py install > klustaviewa_install.log
 
 
