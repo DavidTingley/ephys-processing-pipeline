@@ -18,14 +18,14 @@ ssdDirectory = '/home/david/to_cut/autoclustered/'
 ssdCompName = 'hyperion'
 
 def main(args):
-    repoPath = '/'.join(sys.argv[0].split('/')[:-1])
-    print('repo path is : ' + repoPath)
-
     dataFolder = args.dataFolder # directory with recording subdirectories
     numShanks = args.numShanks# set this value to the number of shanks (spike groups) to cluster
     waitTime = args.waitTime # time interval, in seconds, in between starting new extraction/clustering jobs
     numJobs = args.numJobs# max number of jobs to run at once
     cpuLimit = args.cpuLimit  # max cpu usage allowed before starting new jobs
+    repoPath = args.repoPath
+
+    print('repo path is : ' + repoPath)
 
     while True:  # this is the song that never ends....
         os.chdir(dataFolder)
@@ -192,8 +192,8 @@ if __name__ == "__main__":
     parser.add_argument('numShanks',type=float,default=10,help='number of shanks to process')
     parser.add_argument('-waitTime',type=int,default=300,help='time (seconds) to wait before searching for more jobs [default = 300]')
     parser.add_argument('-numJobs',type=float,default=4,help='number of jobs to run simultaneously [default = 4]')
-    parser.add_argument('-cpuLimit',type=float,default=80,help='cpu usage limit [default = 80]')
+    parser.add_argument('-cpuLimit',type=float,default=100,help='cpu usage limit [default = 80]')
     parser.add_argument('-repoPath',type=str,default=sys.argv[0],help='location of ephys-processing repository')
     args = parser.parse_args()
     print(args)
-    main(args,sys)
+    main(args)
