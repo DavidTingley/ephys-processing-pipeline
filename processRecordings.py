@@ -126,7 +126,7 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
             # this section needs to be abtracted to the number of
             # shanks instead of a hard number...
             print(os.path.abspath(dirName))
-            matlab_command = ['matlab -nodesktop -r "restoredefaultpath; addpath(genpath(\'' + repoPath + '\'));  \
+            matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));  \
                 makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
             # generate folder structure and .prm/.prb files
             print(matlab_command)
@@ -168,7 +168,7 @@ def startAutoClustering(shank, dirName,repoPath,status):
         print('starting autoclustering on ' + shank + ' ..')
         with open("autoclustering.out", "wb") as myfile:
             myfile.write("autoclustering in progress\n")
-        runAutoClust = ['matlab -nodesktop -r "restoredefaultpath; addpath(genpath(\'' + repoPath + '\'));'
+        runAutoClust = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));'
                         ' AutoClustering(\'' + dirName.split('/')[-1] + '\', ' + shank + ');exit"']
         # making this a check_call forces matlab to complete before going to
         # the next job (only one autoclustering job runs at a time)

@@ -13,7 +13,7 @@ reset
 
 conda create -n klusta python=2.7 --yes
 
-conda install -n klusta psutil=4.1 scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes
+conda install -n klusta psutil=4.1 scipy pandas=0.12 pytables=3.0 pyqt setuptools pip cython nose ipython-notebook matplotlib --yes  # consider adding ipython?
 
 conda install -n klusta numpy=1.8 --yes
 
