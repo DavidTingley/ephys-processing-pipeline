@@ -113,9 +113,9 @@ else
         end
         kwikinfo = h5info(tkwik,['/channel_groups/' num2str(elec) '/clusters/main']);
         if ~loadspk
-            [fet clu res ~] = ConvertKlusta2Neurosuite(elec,basepath,fbasename,0,0,1);
+            [fet clu res ~] = ConvertKlusta2Matlab(elec,basepath,fbasename,0,0,1);
         elseif loadspk 
-           [fet clu res wav] = ConvertKlusta2Neurosuite(elec,basepath,fbasename,1,0,1);
+           [fet clu res wav] = ConvertKlusta2Matlab(elec,basepath,fbasename,1,0,1);
         end
         clu = double(clu);
         cluster_names = unique(clu);
@@ -212,7 +212,7 @@ else
  
     % Here we select only clusters that correspond to putative units and that
     % have at least 20 spikes (otherwise errormatrix calculation fails)
-    h = hist(clu,length(unique(clu)));
+    h = hist(clu,length(unique(clu)))';
     goodCluIx = ismember(clu,find(cluster_names < 1000 & h>20)); 
     goodCluIx(noiseIx) = 0;
      
