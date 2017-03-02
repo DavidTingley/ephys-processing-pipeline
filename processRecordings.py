@@ -129,6 +129,7 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
             matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\')); \
                 makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
             # generate folder structure and .prm/.prb files
+            print(matlab_command)
             subprocess.call(matlab_command[0], shell=True)
             time.sleep(10)  # let the process get going...
         return True
