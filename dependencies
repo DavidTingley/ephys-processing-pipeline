@@ -1,3 +1,5 @@
+https://github.com/buzsakilab/buzcode  # clone this and add it to your matlab path
+
 MATLAB
 
 Autoclustering functions from (https://github.com/buzsakilab/buzcode) must be on the MATLAB path
