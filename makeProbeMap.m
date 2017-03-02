@@ -7,7 +7,6 @@ function [] = makeProbeMap(folder, xmlfile)
 %% starting from the top left recording site, and moving right then downward to make the 
 %% nearest neighbor graph
 
-disp([folder '/' xmlfile])
 parameters = LoadParameters([folder '/' xmlfile]);
 warning off
 
