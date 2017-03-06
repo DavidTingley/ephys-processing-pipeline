@@ -1,0 +1,16 @@
+{
+  "installation/klustakwik2/klustakwik2/tests/test_compute_cluster_masks.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_compute_covariance_matrix.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_io.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_linear_algebra.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_mask_starts.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_partitioning.py": true, 
+  "installation/klustakwik2/klustakwik2/tests/test_synthetic_data.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/core/tests/test_main.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/core/tests/test_script.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/processing/tests/test_filtering.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/processing/tests/test_graph.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/processing/tests/test_pca.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/processing/tests/test_threshold.py": true, 
+  "installation/spikedetekt2-master/spikedetekt2/processing/tests/test_waveform.py": true
+}
