@@ -1,0 +1,9 @@
+{
+  "klustakwik2/tests/test_compute_cluster_masks.py": true, 
+  "klustakwik2/tests/test_compute_covariance_matrix.py": true, 
+  "klustakwik2/tests/test_io.py": true, 
+  "klustakwik2/tests/test_linear_algebra.py": true, 
+  "klustakwik2/tests/test_mask_starts.py": true, 
+  "klustakwik2/tests/test_partitioning.py": true, 
+  "klustakwik2/tests/test_synthetic_data.py": true
+}

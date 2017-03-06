@@ -1,3 +1,0 @@
-[console_scripts]
-spikedetekt = spikedetekt2.core.script:main
-
