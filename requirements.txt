@@ -1,4 +1,4 @@
--e https://github.com/buzsakilab/buzcode
+
 psutil
 time
 subprocess
