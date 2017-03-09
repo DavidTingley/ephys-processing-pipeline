@@ -9,6 +9,7 @@ import fnmatch
 import socket
 import shutil
 import argparse
+import xml.etree.ElementTree as ET
 
 # TODO
 # - add behavior tracking extraction
@@ -35,7 +36,8 @@ def main(args):
                 # check that a .dat exists in this folder and matches the
                 # directory name
                 if file.startswith(dirName.split('/')[-1]) & file.endswith(".dat"):
-                    os.chdir(os.path.abspath(dirName))
+                    os.chdir(os.path.abspath(dirName)) # we are now in the recording session folder...
+                    extractLFP(file)  # if no LFP yet, we make one
                     xmlfile = glob.glob("*xml")
                     # check if shank dirs exist and make them if they don't
                     checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath)
@@ -144,9 +146,22 @@ def extractBehaviorTracking():
     # replacement
     print('this function is currently empty....')
 
-def extractLFP():
+def extractLFP(file,repoPath):
+    tree = ET.parse([file + '.xml'])
+    root = tree.getroot()
+    try:
+        nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
+    except (AttributeError):
+        print('is your xml file formatted correctly? couldnt find nChannels....')
+
     # extracts LFP from raw *.dat file and saves to current directory
+    toRun = [repoPath + 'process_resample/process_resample -n ' + nChannels + '-f ' + 20000 + '\
+             ,' + 1250 + ' ' + file + '.dat ' + file + '.lfp; \
+              check_command_status process_resample']
+    print(toRun[0])
+    # subprocess.call(toRun[0], shell=True)
     print('this function is currently empty....')
+    # process_resample -n $nChannels -f $oldSamplingRate,$newSamplingRate $session.dat $session.lfp
 
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using

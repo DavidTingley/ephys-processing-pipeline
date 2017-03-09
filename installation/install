@@ -39,3 +39,9 @@ cd ..
 
 echo  'source activate klusta' >> ~/.bashrc
 
+cd process_resample
+
+make
+
+cd ..
+
