@@ -7,6 +7,25 @@ import argparse
 import os
 import matplotlib.pyplot as plt
 
+# def sinc_interp(x, s, u):
+#     """
+#     Interpolates x, sampled at "s" instants
+#     Output y is sampled at "u" instants ("u" for "upsampled")
+    
+#     from Matlab:
+#     http://phaseportrait.blogspot.com/2008/06/sinc-interpolation-in-matlab.html        
+#     """
+    
+#     if len(x) != len(s):
+#         raise Exception, 'x and s must be the same length'
+    
+#     # Find the period    
+#     T = s[1] - s[0]
+    
+#     sincM = np.tile(u, (len(s), 1)) - np.tile(s[:, np.newaxis], (1, len(u)))
+#     y = np.dot(x, np.sinc(sincM/T))
+#     return y
+
 def main(args):
     # check here and remove/rename old lfp files?
 
@@ -26,13 +45,16 @@ def main(args):
 
     a = np.fromfile(fid, count=chunkSize*nChannels, dtype=np.int16)
     counter = 0;
+    fWindow = sig.get_window('hamming',1)
+
     while a.size > 1:
         lfp = a.reshape(nChannels,chunkSize,order='F')
         lfp_down = np.ndarray((nChannels,1250))
         # plt.subplot(211)
         # plt.plot(np.transpose(lfp))
         for i in range(0,nChannels,1):
-            lfp_down[i,:] = sig.resample(lfp[i,:],1250)
+            lfp_down[i,:] = sig.resample_poly(lfp[i,:],1250,chunkSize,window=fWindow)
+            # lfp_down[i,:] = sinc_interp(lfp[i,:],np.arange(0,1,1/20000.),np.arange(0,1,1/1250.))
         #     plt.subplot(212)
         #     plt.plot(np.transpose(lfp_down))
         # plt.show()
@@ -63,3 +85,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print(args)
     main(args)
+
