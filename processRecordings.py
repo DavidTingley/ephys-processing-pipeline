@@ -38,8 +38,9 @@ def main(args):
                 # directory name
                 if file.startswith(dirName.split('/')[-1]) & file.endswith(".dat"):
                     os.chdir(os.path.abspath(dirName)) # we are now in the recording session folder...
-                    extractLFP(dirName,file,repoPath)  # if no LFP yet, we make one
                     xmlfile = glob.glob("*xml")
+                    extractLFP(dirName,file,xmlfile,repoPath)  # if no LFP yet, we make one
+
                     # check if shank dirs exist and make them if they don't
                     checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
@@ -147,16 +148,18 @@ def extractBehaviorTracking():
     # replacement
     print('this function is currently empty....')
 
-def extractLFP(dirName,file,repoPath):
-    tree = ET.parse([file + '.xml'])
-    root = tree.getroot()
-    try:
-        nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
-    except (AttributeError):
-        print('is your xml file formatted correctly? couldnt find nChannels....')
-    fileout = file.split('.')[0] + '.lfp'
-    processResample.main(dirName,file,fileout,nChannels,20000,1250)    
-    
+def extractLFP(dirName,file,xmlfile,repoPath):
+    lfpFile = file.split('.')[0] + '.lfp'
+    if not os.path.isfile(lfpFile): # check if LFP file exists...
+        print('making LFP file for ' + os.getcwd())
+        tree = ET.parse(dirName + '/' + xmlfile[0])
+        root = tree.getroot()
+        try:
+            nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
+        except (AttributeError):
+            print('is your xml file formatted correctly? couldnt find nChannels....')
+        processResample.main(dirName,file,lfpFile,nChannels,20000,1250)    
+
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using
     toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run

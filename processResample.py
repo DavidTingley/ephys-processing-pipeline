@@ -5,7 +5,7 @@ import scipy.signal as sig
 import argparse
 import os
 
-def main(dataFolder,inputFile,outputFile,nChannels,chunkSize,newChunkSize):
+def main(dataFolder,inputFile,outputFile,nChannels,inChunkSize,outChunkSize):
     # parse args
 
     inputFile = dataFolder + '/' + inputFile
@@ -15,29 +15,30 @@ def main(dataFolder,inputFile,outputFile,nChannels,chunkSize,newChunkSize):
     outputFile = dataFolder + '/' + outputFile
     out = open(outputFile, 'w')
 
-    a = np.fromfile(fid, count=chunkSize*nChannels, dtype=np.int16)
+    a = np.fromfile(fid, count=inChunkSize*nChannels, dtype=np.int16)
     counter = 0;
     fWindow = sig.get_window('hamming',1)
 
     while a.size > 1:
         try: # if len(a) == chunkSize*nChannels?
-            lfp = a.reshape(nChannels,chunkSize,order='F')
+            lfp = a.reshape(nChannels,inChunkSize,order='F')
         except: # elseif len(a) < chunkSize*nChannels?
             lastChunk = a.size / nChannels # re-assign chunkSize for the last chunk of data
-            newChunkSize = lastChunk / (chunkSize / newChunkSize)
-            print(lastChunk, newChunkSize)
+            outChunkSize = lastChunk / (inChunkSize / outChunkSize)
+            print(lastChunk, outChunkSize)
             lfp = a.reshape(nChannels,lastChunk,order='F')
+            inChunkSize = lastChunk  # overwrite inChunk with lastChunk size
             
-        lfp_down = np.ndarray((nChannels,newChunkSize))
+        lfp_down = np.ndarray((nChannels,outChunkSize))
 
         for i in range(0,nChannels,1):
-            lfp_down[i,:] = sig.resample_poly(lfp[i,:],newChunkSize,chunkSize,window=fWindow)
+            lfp_down[i,:] = sig.resample_poly(lfp[i,:],outChunkSize,inChunkSize,window=fWindow)
 
-        b = lfp_down.reshape(nChannels*newChunkSize,1,order='F')
+        b = lfp_down.reshape(nChannels*outChunkSize,1,order='F')
         np.transpose(np.int16(b)).tofile(out)
-        a = np.fromfile(fid, count=chunkSize*nChannels, dtype=np.int16)
+        a = np.fromfile(fid, count=inChunkSize*nChannels, dtype=np.int16)
         if counter % 360 == 0:
-            print(['extracting LFP: ' + str(200*(counter*chunkSize*nChannels)/recordingSize) + ' percent done...'])
+            print(['extracting LFP: ' + str(200*(counter*inChunkSize*nChannels)/recordingSize) + ' percent done...'])
         counter = counter + 1
 
 if __name__ == "__main__":
@@ -57,6 +58,6 @@ if __name__ == "__main__":
     inputFile = args.inputFile,
     outputFile = args.outputFile,
     nChannels = args.nChannels,
-    chunkSize = args.inSamplingRate,
-    newChunkSize = args.outSamplingRate)
+    inChunkSize = args.inSamplingRate,
+    outChunkSize = args.outSamplingRate)
 
