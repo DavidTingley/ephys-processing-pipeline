@@ -19,7 +19,7 @@ script: pytest
 # sudo: false
 # python:
 #   - "2.7
-"#   - "3.3"
+#   - "3.3"
 #   - "3.4"
 # install:
 #   # - sudo apt-get update
@@ -52,7 +52,6 @@ script: pytest
 notifications:
   email:
     recipients:
-      - one@example.com
-      - other@example.com
+      - davidtingley2@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
