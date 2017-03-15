@@ -1,6 +1,6 @@
 """Contain default parameters."""
 
-NCHANNELS = 96
+NCHANNELS = 128
 sample_rate = 20000.
 NBITS = 16
 VOLTAGE_GAIN = 10.

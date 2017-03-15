@@ -1,0 +1,3 @@
+[submodule "matlabEngine"]
+	path = matlabEngine
+	url = https://github.com/DavidTingley/matlabEngine.git
