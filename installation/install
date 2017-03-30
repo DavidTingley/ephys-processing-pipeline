@@ -48,3 +48,4 @@ cd ..
 cd ~/miniconda/envs/klusta/lib/python2.7/site-packages/
 
 git clone https://github.com/DavidTingley/matlab
+

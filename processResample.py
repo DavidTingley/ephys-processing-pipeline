@@ -17,7 +17,10 @@ def main(dataFolder,inputFile,outputFile,nChannels,inChunkSize,outChunkSize):
 
     a = np.fromfile(fid, count=inChunkSize*nChannels, dtype=np.int16)
     counter = 0;
-    fWindow = sig.get_window('hamming',1)
+    # fWindow = sig.get_window(('gaussian',10000./500.),20)
+    fWindow = sig.kaiser(20,10000./500.)
+    # bb, aa = sig.cheby2(256,40,500./10000.,'lowpass')
+    # fWindow = sig.firwin(3,500.,window='chebwin',100.,nyq=10000.)
 
     while a.size > 1:
         try: # if len(a) == chunkSize*nChannels?

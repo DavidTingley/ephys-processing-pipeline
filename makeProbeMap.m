@@ -61,7 +61,8 @@ for shank = 1:parameters.nElecGps
         else
            pn = 1;
         end
-    s=[s, '\t' num2str(channels(i)) ': [' num2str(pn*(-(20+1-i)*2)) ', ' num2str(-i*10) '], \n'];
+%     s=[s, '\t' num2str(channels(i)) ': [' num2str(pn*(-(20+1-i)*2)) ', ' num2str(-i*10) '], \n'];
+    s=[s, '\t' num2str(channels(i)) ': [' num2str(pn*20) ', ' num2str(-i*10) '], \n'];
     end
     s=[s, '\t},\n},\n}' ];
     
