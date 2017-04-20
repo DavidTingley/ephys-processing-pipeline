@@ -57,7 +57,8 @@ def main(args):
                                         # check that spike extraction hasn't
                                         # been done
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')):
-                                            startClusterJob(root, file)
+                                            # startClusterJob(root, file)
+                                            print('do nothing')
                                         # check if there is a log file
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
                                             status = getFolderStatus()
@@ -98,6 +99,7 @@ def getFolderStatus():
                 f.seek(-2, 1)
             last = f.readline()       # Read last line.
             status = last.split(" ")[-1].split(".")[0]
+            status = status.split("\n")[0] # removes EOF
         else:
             status = ''
     return status
@@ -158,7 +160,7 @@ def extractLFP(dirName,file,xmlfile,repoPath):
             nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
         except (AttributeError):
             print('is your xml file formatted correctly? couldnt find nChannels....')
-        processResample.main(dirName,file,lfpFile,nChannels,20000,1250)    
+        # processResample.main(dirName,file,lfpFile,nChannels,20000,1250)    
 
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using
@@ -174,7 +176,7 @@ def startClusterJob(root, file):  # starts the spike extraction/clustering proce
 
 
 def startAutoClustering(shank, dirName,repoPath,status):
-    if any(fnmatch.fnmatch(status, p) for p in ['abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
+    if any(fnmatch.fnmatch(status, p) for p in ['1000','abandoning', 'finishing']) and not os.path.exists("autoclustering.out"):
         # check Klustakwik has finished
         print(os.getcwd())
         print('starting autoclustering on ' + shank + ' ..')

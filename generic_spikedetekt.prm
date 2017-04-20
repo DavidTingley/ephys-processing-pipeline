@@ -10,7 +10,7 @@ assert sample_rate > 0
 
 # Filtering
 # ---------
-filter_low = 500. # Low pass frequency (Hz)
+filter_low = 600. # Low pass frequency (Hz)
 filter_high = 0.95 * .5 * sample_rate
 filter_butter_order = 3  # Order of Butterworth filter.
 
