@@ -1,11 +1,11 @@
 # copy and paste the below text to install this pipeline
 # tested on linux 16.04 with no prior installations of miniconda/klusta
 
-#wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
+wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
 
-#chmod +x Miniconda-3.7.0-Linux-x86_64.sh
+chmod +x Miniconda-3.7.0-Linux-x86_64.sh
 
-#./Miniconda-3.7.0-Linux-x86_64.sh
+./Miniconda-3.7.0-Linux-x86_64.sh
 
 source ~/.bashrc
 

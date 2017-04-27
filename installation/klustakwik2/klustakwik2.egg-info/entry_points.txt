@@ -1,3 +1,0 @@
-[console_scripts]
-kk2_legacy = klustakwik2.scripts.kk2_legacy:main
-

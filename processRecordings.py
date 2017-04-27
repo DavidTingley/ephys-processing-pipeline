@@ -10,7 +10,7 @@ import socket
 import shutil
 import argparse
 import xml.etree.ElementTree as ET
-import processResample
+import resample
 
 # TODO
 # - add behavior tracking extraction
@@ -160,7 +160,7 @@ def extractLFP(dirName,file,xmlfile,repoPath):
             nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
         except (AttributeError):
             print('is your xml file formatted correctly? couldnt find nChannels....')
-        # processResample.main(dirName,file,lfpFile,nChannels,20000,1250)    
+        # resample.main(dirName,file,lfpFile,nChannels,20000,1250)    
 
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using
