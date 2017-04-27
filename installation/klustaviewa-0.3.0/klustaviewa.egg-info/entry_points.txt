@@ -1,6 +1,6 @@
 [console_scripts]
-kwikkonvert = kwiklib.scripts.runkwikkonvert:main
 klusta = spikedetekt2.core.script:main
+kwikkonvert = kwiklib.scripts.runkwikkonvert:main
 
 [gui_scripts]
 klustaviewa = klustaviewa.scripts.runklustaviewa:main

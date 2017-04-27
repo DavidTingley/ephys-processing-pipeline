@@ -57,8 +57,8 @@ def main(args):
                                         # check that spike extraction hasn't
                                         # been done
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')):
-                                            # startClusterJob(root, file)
-                                            print('do nothing')
+                                            startClusterJob(root, file)
+                                            # print('do nothing')
                                         # check if there is a log file
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
                                             status = getFolderStatus()
