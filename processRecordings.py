@@ -15,7 +15,6 @@ import resample
 # TODO
 # - add behavior tracking extraction
 # - add LFP extraction
-# - add SSD copying functionality
 ssdDirectory = '/home/david/to_cut/autoclustered/'
 ssdCompName = 'hyperion'
 
@@ -144,11 +143,17 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
         return False
 
 
-def extractBehaviorTracking():
+def extractBehaviorTracking(xmlfile):
     # checks if there is behavioral tracking data that needs to be synced to ephys data
     # eventually this will call Process_ConvertOptitrack2Behav.m or it's
-    # replacement
-    print('this function is currently empty....')
+	# replacement
+	if not os.path.isfile([xmlfile[0] + '.tracking.behavior.mat']) and \
+	os.path.isfile('Session*') or os.path.isfile('*.tak'):
+		matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));  \
+		Process_ConvertOptitrack2Behav(' + xmlfile[0] +');exit"']
+		print(matlab_command)
+		subprocess.call(matlab_command[0], shell=True)
+
 
 def extractLFP(dirName,file,xmlfile,repoPath):
     lfpFile = file.split('.')[0] + '.lfp'
