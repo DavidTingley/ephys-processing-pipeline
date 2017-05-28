@@ -126,7 +126,8 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
 def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
     try:
         subdirList = [d for d in subdirList if not '201' in d if not
-                      'extras' in d if not 'temp' in d]  # removes folders that are not shank folders
+                      'extras' in d if not 'temp' in d if not 'Session' 
+                      in d if not 'State' in d]  # removes folders that are not shank folders
         if len(subdirList) < numShanks:
             # this section needs to be abtracted to the number of
             # shanks instead of a hard number...

@@ -12,6 +12,7 @@ warning off
 
 for shank = 1:parameters.nElecGps
     % make a folder for each directory
+    if ~exist([folder '/' num2str(shank)])
     mkdir([folder '/' num2str(shank)]);
     
     channels = parameters.spikeGroups.groups{shank};
@@ -103,6 +104,7 @@ for shank = 1:parameters.nElecGps
     end
     end
     clear s l list c ss
+end
 end
 end
 
