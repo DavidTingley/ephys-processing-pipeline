@@ -10,7 +10,7 @@ import socket
 import shutil
 import argparse
 import xml.etree.ElementTree as ET
-import resample
+# import resample
 
 # TODO
 # - add behavior tracking extraction
@@ -148,7 +148,7 @@ def extractBehaviorTracking(xmlfile):
     # eventually this will call Process_ConvertOptitrack2Behav.m or it's
 	# replacement
 	if not os.path.isfile([xmlfile[0] + '.tracking.behavior.mat']) and \
-	os.path.isfile('Session*') or os.path.isfile('*.tak'):
+		len(glob.iglob('Session*')) > 0 or len(glob.iglob('*.tak')) > 0:
 		matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));  \
 		Process_ConvertOptitrack2Behav(' + xmlfile[0] +');exit"']
 		print(matlab_command)
@@ -157,18 +157,19 @@ def extractBehaviorTracking(xmlfile):
 
 def extractLFP(dirName,file,xmlfile,repoPath):
     lfpFile = file.split('.')[0] + '.lfp'
-    if not os.path.isfile(lfpFile): # check if LFP file exists...
-        print('making LFP file for ' + os.getcwd())
-        tree = ET.parse(dirName + '/' + xmlfile[0])
-        root = tree.getroot()
-        try:
-            nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
-        except (AttributeError):
-            print('is your xml file formatted correctly? couldnt find nChannels....')
+    # if not os.path.isfile(lfpFile): # check if LFP file exists...
+    #     print('making LFP file for ' + os.getcwd())
+    #     tree = ET.parse(dirName + '/' + xmlfile[0])
+    #     root = tree.getroot()
+    #     try:
+    #         nChannels = int(root.find('acquisitionSystem').find('nChannels').text)  # some very bad assumptions that your xml is formatted a la FMAToolbox....
+    #     except (AttributeError):
+    #         print('is your xml file formatted correctly? couldnt find nChannels....')
         # resample.main(dirName,file,lfpFile,nChannels,20000,1250)    
 
 
 def startClusterJob(root, file):  # starts the spike extraction/clustering process using
+    # if not socket.gethostname() == 'hyperion':
     toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     # run klusta job
     subprocess.call(toRun[0], shell=True)
@@ -197,7 +198,7 @@ def startAutoClustering(shank, dirName,repoPath,status):
 
 def copyToSSD(ssdCompName, ssdDirectory, root, shank, status): # copies finished shanks to a SSD for manual spike sorting
     if fnmatch.fnmatch(status, 'autoclustered') and socket.gethostname() == 'hyperion' and os.path.exists("autoclustering.out"):
-        # checks that Autoclustering is done
+    #     # checks that Autoclustering is done
         print('copying ' + root + '/' + shank +
               ' to SSD and removing progress logfile..')
         os.remove("autoclustering.out")

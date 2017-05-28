@@ -11,7 +11,6 @@ parameters = LoadParameters([folder '/' xmlfile]);
 warning off
 
 for shank = 1:parameters.nElecGps
-    
     % make a folder for each directory
     mkdir([folder '/' num2str(shank)]);
     
@@ -23,16 +22,18 @@ for shank = 1:parameters.nElecGps
         c=1+c;
         end
     end
-    for i=1:length(channels)-2
-        for j=2 
-        l(c,:) = [channels(i),channels(i+j)];
-        c=1+c;
+    if length(channels) < 32
+        for i=1:length(channels)-2
+            for j=2 
+            l(c,:) = [channels(i),channels(i+j)];
+            c=1+c;
+            end
         end
-    end
-    for i=1:length(channels)-3
-        for j=3
-        l(c,:) = [channels(i),channels(i+j)];
-        c=1+c;
+        for i=1:length(channels)-3
+            for j=3
+            l(c,:) = [channels(i),channels(i+j)];
+            c=1+c;
+            end
         end
     end
     list = l;
@@ -87,7 +88,11 @@ for shank = 1:parameters.nElecGps
     fid = fopen([folder '/' num2str(shank) '/' xmlfile(1:end-4) '_sh' num2str(shank) '.prm'],'wt');
     ss = ['EXPERIMENT_NAME = ''' folder '/' num2str(shank) '/' xmlfile(1:end-4) '_sh' num2str(shank) '''\n',...
         'RAW_DATA_FILES=[''' folder  '/' xmlfile(1:end-4) '.dat'  ''']\n',...
-        'PRB_FILE = ''' num2str(shank) '.prb''\n'];
+        'PRB_FILE = ''' num2str(shank) '.prb''\n',...
+        'NCHANNELS = ' num2str(parameters.nChannels) '\n',...
+        'sample_rate = ' num2str(parameters.rates.wideband) '.\n',...
+        'NBITS = ' num2str(parameters.nBits) '\n'];
+        
     fprintf(fid,ss);
     for i = 1:numel(generic)
     if generic{i+1} == -1

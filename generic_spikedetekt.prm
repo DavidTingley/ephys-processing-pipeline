@@ -1,8 +1,5 @@
 """Contain default parameters."""
 
-NCHANNELS = 128
-sample_rate = 20000.
-NBITS = 16
 VOLTAGE_GAIN = 10.
 WAVEFORMS_NSAMPLES = 32
 
@@ -33,8 +30,8 @@ save_low = False
 nexcerpts = 60
 excerpt_size = int(1. * sample_rate)
 use_single_threshold = False
-threshold_strong_std_factor = 4.5
-threshold_weak_std_factor = 2.
+threshold_strong_std_factor = 5.
+threshold_weak_std_factor = 2.5
 detect_spikes = 'negative'
 
 # Connected component
@@ -48,7 +45,7 @@ extract_s_after = 16
 
 # Features
 # --------
-nfeatures_per_channel = 6  # Number of features per channel.
+nfeatures_per_channel = 5  # Number of features per channel.
 pca_nwaveforms_max = 20000
 features_contiguous = True  # Whether to make the features array contiguous
 
