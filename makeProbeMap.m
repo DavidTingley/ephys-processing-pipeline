@@ -13,6 +13,7 @@ warning off
 for shank = 1:parameters.nElecGps
     % make a folder for each directory
     if ~exist([folder '/' num2str(shank)])
+        disp(['working on shank #' num2str(shank)])
     mkdir([folder '/' num2str(shank)]);
     
     channels = parameters.spikeGroups.groups{shank};
