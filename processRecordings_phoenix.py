@@ -41,7 +41,7 @@ def main(args):
                     extractLFP(dirName,file,xmlfile,repoPath)  # if no LFP yet, we make one
 
                     # check if shank dirs exist and make them if they don't
-                    checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath)
+                    checkShankDirsExist(dirName,subdirList, dirName, numShanks, xmlfile,repoPath)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered and its directory name is less than 3 characters
