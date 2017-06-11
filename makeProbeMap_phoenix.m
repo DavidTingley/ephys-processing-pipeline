@@ -15,6 +15,8 @@ else
     folder = pwd;
     s = strsplit(folder,'/')
     shank = str2num(s{end});
+    s{end}='';
+    folder = strjoin(s,'/')
     cd ..
     xmlfile = dir('*xml');
     xmlfile = xmlfile.name;
