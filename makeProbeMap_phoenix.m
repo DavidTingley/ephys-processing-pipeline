@@ -13,10 +13,11 @@ xmlfile=varargin{2};
 shank=varargin{3}
 else
 folder = pwd;
+shank = str2num(s{end});
+cd ..
 xmlfile = dir('*xml');
 xmlfile = xmlfile.name;
 s = strsplit(folder,'/')
-shank = str2num(s{end});
 end
 
 parameters = LoadParameters([folder '/' xmlfile]);
@@ -118,6 +119,10 @@ for shank = shank
     % end
     clear s l list c ss
 end
+end
+if nargin ~= 3
+
+cd(shank)
 end
 end
 
