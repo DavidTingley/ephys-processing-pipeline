@@ -41,7 +41,7 @@ def main(args):
                     extractLFP(dirName,file,xmlfile,repoPath)  # if no LFP yet, we make one
 
                     # check if shank dirs exist and make them if they don't
-                    checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath)
+                    checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered and its directory name is less than 3 characters
@@ -123,7 +123,7 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
         time.sleep(waitTime)
 
 
-def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
+def checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath):
     try:
         subdirList = [d for d in subdirList if not '201' in d if not
                       'extras' in d if not 'temp' in d if not 'Session' 
@@ -131,9 +131,10 @@ def checkShankDirsExist(subdirList, dirName, numShanks, xmlfile,repoPath):
         if len(subdirList) < numShanks:
             # this section needs to be abtracted to the number of
             # shanks instead of a hard number...
+            recording = xmlfile.split('.')[0]
             print(os.path.abspath(dirName))
-            matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));  \
-                makeProbeMap_phoenix(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
+            matlab_command = ['qsub ~/run_matlab_test.bash "probemap(' + \
+            root + ',' + recording + ',' + range(1,numShanks) +')"']
             # generate folder structure and .prm/.prb files
             print(matlab_command)
             subprocess.call(matlab_command[0], shell=True)
@@ -174,8 +175,9 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
-    toRun = ['qsub run_matlab_test.bash "probemap(' + root + ',' + recording + ')";'
-    'sleep2m; qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
+    toRun = ['qsub ~/run_matlab_test.bash "probemap(' + \
+            root + ',' + recording + ',' + shank + ')"' \
+            'qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     subprocess.call(toRun[0], shell=True)
     # add something here to write the computer name to the log file

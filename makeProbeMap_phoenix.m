@@ -1,4 +1,4 @@
-function [] = makeProbeMap(folder, xmlfile)
+function [] = makeProbeMap(folder, xmlfile,shank)
 %% this function takes an xml file with spike groups already assigned and 
 %% generates *.prb files for each shank for spike detection/masking/clustering
 
@@ -10,7 +10,7 @@ function [] = makeProbeMap(folder, xmlfile)
 parameters = LoadParameters([folder '/' xmlfile]);
 warning off
 
-for shank = 1:parameters.nElecGps
+for shank = shank
     % make a folder for each directory
     % if ~exist([folder '/' num2str(shank)])
         disp(['working on shank #' num2str(shank)])
