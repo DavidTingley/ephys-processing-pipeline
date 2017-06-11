@@ -52,11 +52,12 @@ def main(args):
                                     if fnmatch.fnmatch(file, '*.prm'):
                                         # you shall not pass... until other
                                         # jobs have finished.
-                                        checkJobLimits(cpuLimit, numJobs, waitTime)
+                                        # checkJobLimits(cpuLimit, numJobs, waitTime)
                                         # check that spike extraction hasn't
                                         # been done
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')):
-                                            startClusterJob(root, file, shank)
+                                            if not any(fnmatch.fnmatch(i, '*.klg*') for i in os.listdir('.')):
+                                                startClusterJob(root, file, shank)
                                             # print('do nothing')
                                         # check if there is a log file
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
@@ -175,8 +176,8 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
-    toRun = ['qsub ~/run_matlab_test.bash "probemap(\'' + root + '\',\'' \
-     + recording + '\',' + shank + ')"; sleep 2m; ' \
+    toRun = ['qsub ~/run_matlab_test.bash "probemap( + root + ', \
+     + recording + ',' + shank + ')"; sleep 2m; ' \
             'qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     print([toRun[0]])
