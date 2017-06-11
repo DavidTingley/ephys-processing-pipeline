@@ -1,4 +1,4 @@
-function [] = makeProbeMap(varargin)
+function [] = makeProbeMap_phoenix(varargin)
 %% this function takes an xml file with spike groups already assigned and 
 %% generates *.prb files for each shank for spike detection/masking/clustering
 

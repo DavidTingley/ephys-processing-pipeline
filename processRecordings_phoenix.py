@@ -177,7 +177,7 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
     toRun = ['qsub ~/run_matlab_test.bash "probemap(\'' + root + '\',\'' \
-     + recording + '\,' + shank + ')"']
+     + recording + '\',' + shank + ')"']
     print([toRun[0]])
     subprocess.call(toRun[0], shell=True)
     time.sleep(45)  # let one process start before generating another
