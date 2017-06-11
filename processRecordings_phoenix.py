@@ -41,7 +41,7 @@ def main(args):
                     extractLFP(dirName,file,xmlfile,repoPath)  # if no LFP yet, we make one
 
                     # check if shank dirs exist and make them if they don't
-                    checkShankDirsExist(dirName,subdirList, dirName, numShanks, xmlfile,repoPath)
+                    # checkShankDirsExist(dirName,subdirList, dirName, numShanks, xmlfile,repoPath)
                     for root, shankdirs, defaultFiles in os.walk(dirName):
                         for shank in shankdirs:  # iterate through shank subdirectories
                             # if the shank hasn't already been clustered and its directory name is less than 3 characters
@@ -175,16 +175,16 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
-    toRun = ['qsub ~/run_matlab_test.bash "probemap(' + \
-            root + ',' + recording + ',' + shank + ')"; sleep 2m; ' \
+    toRun = ['qsub ~/run_matlab_test.bash "probemap(' + root + ',' + recording + ',' + shank + ')"; sleep 2m; ' \
             'qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
+    print([toRun[0]])
     subprocess.call(toRun[0], shell=True)
     # add something here to write the computer name to the log file
     f = open('complog.log', 'w')
     f.write(socket.gethostname())
     f.close()
-    print(['starting... ' + root + toRun[0]])
+    
     time.sleep(10)  # let one process start before generating another
 
 
