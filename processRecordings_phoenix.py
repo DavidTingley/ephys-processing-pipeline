@@ -173,7 +173,7 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # if not socket.gethostname() == 'hyperion':
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0]
-    toRun = ['qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' klusta_auto.sh']
+    toRun = ['qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     subprocess.call(toRun[0], shell=True)
     # add something here to write the computer name to the log file
