@@ -8,16 +8,17 @@ function [] = makeProbeMap_phoenix(varargin)
 %% nearest neighbor graph
 
 if nargin == 3
-folder=varargin{1};
-xmlfile=varargin{2};
-shank=varargin{3}
+    folder=varargin{1};
+    xmlfile=varargin{2};
+    shank=varargin{3}
 else
-folder = pwd;
-shank = str2num(s{end});
-cd ..
-xmlfile = dir('*xml');
-xmlfile = xmlfile.name;
-s = strsplit(folder,'/')
+    folder = pwd;
+    s = strsplit(folder,'/')
+    shank = str2num(s{end});
+    cd ..
+    xmlfile = dir('*xml');
+    xmlfile = xmlfile.name;
+
 end
 
 parameters = LoadParameters([folder '/' xmlfile]);
@@ -121,7 +122,6 @@ for shank = shank
 end
 end
 if nargin ~= 3
-
 cd(shank)
 end
 end
