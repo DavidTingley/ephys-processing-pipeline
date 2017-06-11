@@ -172,7 +172,7 @@ def extractLFP(dirName,file,xmlfile,repoPath):
 def startClusterJob(root, file, shank):  # starts the spike extraction/clustering process using
     # if not socket.gethostname() == 'hyperion':
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
-    recording = file.split('_')[0]
+    recording = file.split('_')[0:-1].join('_')
     toRun = ['qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     subprocess.call(toRun[0], shell=True)
