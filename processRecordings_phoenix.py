@@ -175,7 +175,8 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
-    toRun = ['qsub ~/run_matlab_test.bash "probemap(' + root + ',' + recording + ',' + shank + ')"; sleep 2m; ' \
+    toRun = ['qsub ~/run_matlab_test.bash "probemap(\'' + root + '\',\'' \
+     + recording + '\',' + shank + ')"; sleep 2m; ' \
             'qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     print([toRun[0]])
