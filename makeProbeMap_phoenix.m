@@ -1,4 +1,4 @@
-function [] = makeProbeMap(folder, xmlfile,shank)
+function [] = makeProbeMap(varargin)
 %% this function takes an xml file with spike groups already assigned and 
 %% generates *.prb files for each shank for spike detection/masking/clustering
 
@@ -6,6 +6,18 @@ function [] = makeProbeMap(folder, xmlfile,shank)
 %% in the spike groups map onto a specific geometrical arrangement of channels on the shank
 %% starting from the top left recording site, and moving right then downward to make the 
 %% nearest neighbor graph
+
+if nargin == 3
+folder=varargin{1};
+xmlfile=varargin{2};
+shank=varargin{3}
+else
+folder = pwd;
+xmlfile = dir('*xml');
+xmlfile = xmlfile.name;
+s = strsplit(folder,'/')
+shank = str2num(s{end});
+end
 
 parameters = LoadParameters([folder '/' xmlfile]);
 warning off
