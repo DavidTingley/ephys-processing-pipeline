@@ -174,7 +174,8 @@ def startClusterJob(root, file, shank):  # starts the spike extraction/clusterin
     # toRun = ['nohup klusta ' + file + ' &']  # create the klusta command to run
     recording = file.split('_')[0:-1]
     recording = '_'.join(recording)
-    toRun = ['qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
+    toRun = ['qsub run_matlab_test.bash "probemap(' + root + ',' + recording + ')";'
+    'sleep2m; qsub -v DATAFOLDER=' + root + ',RECORDING=' + recording + ',SHANK=' + shank + ' ~/klusta_auto.sh']
     # run klusta job
     subprocess.call(toRun[0], shell=True)
     # add something here to write the computer name to the log file
