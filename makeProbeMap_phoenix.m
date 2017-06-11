@@ -124,7 +124,7 @@ for shank = shank
 end
 end
 if nargin ~= 3
-cd(num2str(shank)
+cd(num2str(shank))
 end
 end
 
