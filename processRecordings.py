@@ -56,8 +56,8 @@ def main(args):
                                         # check that spike extraction hasn't
                                         # been done
                                         if not any(fnmatch.fnmatch(i, '*.kwik') for i in os.listdir('.')):
-                                            startClusterJob(root, file)
-                                            # print('do nothing')
+                                            # startClusterJob(root, file)
+                                            print('do nothing')
                                         # check if there is a log file
                                         if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
                                             status = getFolderStatus()
@@ -90,17 +90,23 @@ def getCurrentJobs():
 
 
 def getFolderStatus():
-    with open('nohup.out', "rb") as f:
-        if os.path.getsize('nohup.out') > 200: # checks that file has more than 1 byte written to it
-            f.seek(-2, 2)             # Jump to the second last byte.
-            while f.read(1) != "\n":  # Until EOL is found...
-                # ...jump back the read byte plus one more.
-                f.seek(-2, 1)
-            last = f.readline()       # Read last line.
-            status = last.split(" ")[-1].split(".")[0]
-            status = status.split("\n")[0] # removes EOF
-        else:
-            status = ''
+    klg = glob.glob('*.klg.*')
+    print(klg)
+    if len(klg) > 0:
+        with open(klg[0], "rb") as f:
+            if os.path.getsize('nohup.out') > 200: # checks that file has more than 1 byte written to it
+                f.seek(-2, 2)             # Jump to the second last byte.
+                while f.read(1) != "\n":  # Until EOL is found...
+                    # ...jump back the read byte plus one more.
+                    f.seek(-2, 1)
+                last = f.readline()       # Read last line.
+                status = last.split(" ")[-1].split(".")[0]
+                status = status.split("\n")[0] # removes EOF
+            else:
+                status = ''
+    else:
+        status = ''
+
     return status
 
 
