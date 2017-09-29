@@ -59,11 +59,10 @@ def main(args):
                                             # startClusterJob(root, file)
                                             print('do nothing')
                                         # check if there is a log file
-                                        if any(fnmatch.fnmatch(i, 'nohup.out') for i in os.listdir('.')):
-                                            status = getFolderStatus()
-                                            startAutoClustering(shank, dirName,repoPath,status)
-                                            copyToSSD(
-                                                ssdCompName, ssdDirectory, root, shank, status)
+                                        status = getFolderStatus()
+                                        startAutoClustering(shank, dirName,repoPath,status)
+                                        copyToSSD(
+                                            ssdCompName, ssdDirectory, root, shank, status)
                                 os.chdir('..')  # return to recording directory
         time.sleep(waitTime)  # it goes on and on my friends...
 
@@ -94,7 +93,7 @@ def getFolderStatus():
     print(klg)
     if len(klg) > 0:
         with open(klg[0], "rb") as f:
-            if os.path.getsize('nohup.out') > 200: # checks that file has more than 1 byte written to it
+            if os.path.getsize(klg[0]) > 200: # checks that file has more than 1 byte written to it
                 f.seek(-2, 2)             # Jump to the second last byte.
                 while f.read(1) != "\n":  # Until EOL is found...
                     # ...jump back the read byte plus one more.
@@ -118,7 +117,7 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
         time.sleep(waitTime)
         cpu = psutil.cpu_percent(2)
     mem = psutil.virtual_memory()  # samples virtual memory usage
-    while mem.percent > 90:
+    while mem.percent > 97:
         print('current memory usage: %f' % mem.percent)
         # wait until resources are
         # available
@@ -209,8 +208,12 @@ def copyToSSD(ssdCompName, ssdDirectory, root, shank, status): # copies finished
         print('copying ' + root + '/' + shank +
               ' to SSD and removing progress logfile..')
         os.remove("autoclustering.out")
-        shutil.copytree(root + '/' + shank, ssdDirectory +
-                        root.split('/')[-2] + '/' + root.split('/')[-1] + '/' + shank)
+        try:
+            shutil.copytree(root + '/' + shank, ssdDirectory +
+                            root.split('/')[-2] + '/' + root.split('/')[-1] + '/' + shank)
+        except:
+            print('file exists already... not copying anything.')
+
         # copy files to SSD
         with open("nohup.out", "a") as myfile:
             myfile.write("copied to SSD\n")
