@@ -7,7 +7,7 @@ function [] = makeProbeMap(folder, xmlfile)
 %% starting from the top left recording site, and moving right then downward to make the 
 %% nearest neighbor graph
 
-parameters = LoadParameters([folder '/' xmlfile]);
+parameters = LoadParameters([folder]);
 warning off
 
 for shank = 1:parameters.nElecGps

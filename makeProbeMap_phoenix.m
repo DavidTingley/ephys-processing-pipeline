@@ -23,7 +23,7 @@ else
 
 end
 
-parameters = LoadParameters([folder '/' xmlfile]);
+parameters = LoadParameters([folder ]);
 warning off
 
 for shank = shank
