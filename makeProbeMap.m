@@ -12,6 +12,7 @@ warning off
 
 for shank = 1:parameters.nElecGps
     % make a folder for each directory
+    try
     if ~exist([folder '/' num2str(shank)])
         disp(['working on shank #' num2str(shank)])
     mkdir([folder '/' num2str(shank)]);
@@ -105,6 +106,9 @@ for shank = 1:parameters.nElecGps
     end
     end
     clear s l list c ss
+catch 
+
+    end
 end
 end
 end
