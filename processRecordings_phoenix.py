@@ -136,7 +136,7 @@ def checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath):
         recording = xmlfile.split('.')[0]
         print(os.path.abspath(dirName))
         matlab_command = ['qsub ~/run_matlab_test.bash "probemap(' + \
-        root + ',' + recording + ',' + range(1,numShanks) +')"']
+        root + ',' + recording + ',' + range(1,int(numShanks) +')"']
         # generate folder structure and .prm/.prb files
         print(matlab_command)
         subprocess.call(matlab_command[0], shell=True)
