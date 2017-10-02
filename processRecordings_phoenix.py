@@ -135,6 +135,7 @@ def checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath):
             # shanks instead of a hard number...
             print(os.path.abspath(dirName))
             matlab_command = ['matlab -nodesktop -r "addpath(genpath(\'' + repoPath + '\'));  \
+                addpath(genpath(/ifs/home/dwt244/buzcode\)); \
                 makeProbeMap(\'' + os.path.abspath(dirName) + '\',\'' + xmlfile[0] + '\');exit"']
             # generate folder structure and .prm/.prb files
             print(matlab_command)
