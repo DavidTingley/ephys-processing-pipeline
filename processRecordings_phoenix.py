@@ -135,9 +135,9 @@ def checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath):
         # shanks instead of a hard number...
         recording = xmlfile.split('.')[0]
         print(os.path.abspath(dirName))
-        for sh in range(1,int(numShanks)):
+        for sh in range(1,int(numShanks),1):
             matlab_command = ['qsub ~/run_matlab_test.bash "addpath(genpath(\'' + repoPath + '\')); probemap(\'' + \
-            root + ',' + recording + '\',' + str(sh) +')"']
+            root + ',' + recording + '\',' + sh +')"']
             # generate folder structure and .prm/.prb files
             print(matlab_command)
             subprocess.call(matlab_command[0], shell=True)
