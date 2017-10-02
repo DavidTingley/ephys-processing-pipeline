@@ -125,25 +125,25 @@ def checkJobLimits(cpuLimit, numJobs, waitTime):
 
 
 def checkShankDirsExist(root,subdirList, dirName, numShanks, xmlfile,repoPath):
-    try:
-        subdirList = [d for d in subdirList if not '201' in d if not
-                      'extras' in d if not 'temp' in d if not 'Session' 
-                      in d if not 'State' in d]  # removes folders that are not shank folders
-        if len(subdirList) < numShanks:
-            # this section needs to be abtracted to the number of
-            # shanks instead of a hard number...
-            recording = xmlfile.split('.')[0]
-            print(os.path.abspath(dirName))
-            matlab_command = ['qsub ~/run_matlab_test.bash "probemap(' + \
-            root + ',' + recording + ',' + range(1,numShanks) +')"']
-            # generate folder structure and .prm/.prb files
-            print(matlab_command)
-            subprocess.call(matlab_command[0], shell=True)
-            time.sleep(10)  # let the process get going...
-        return True
-    except:
-        print('errorrr')
-        return False
+    # try:
+    subdirList = [d for d in subdirList if not '201' in d if not
+                  'extras' in d if not 'temp' in d if not 'Session' 
+                  in d if not 'State' in d]  # removes folders that are not shank folders
+    if len(subdirList) < numShanks:
+        # this section needs to be abtracted to the number of
+        # shanks instead of a hard number...
+        recording = xmlfile.split('.')[0]
+        print(os.path.abspath(dirName))
+        matlab_command = ['qsub ~/run_matlab_test.bash "probemap(' + \
+        root + ',' + recording + ',' + range(1,numShanks) +')"']
+        # generate folder structure and .prm/.prb files
+        print(matlab_command)
+        subprocess.call(matlab_command[0], shell=True)
+        time.sleep(10)  # let the process get going...
+    return True
+# except:
+    print('errorrr')
+    return False
 
 
 def extractBehaviorTracking(xmlfile):
