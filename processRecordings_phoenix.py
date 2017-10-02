@@ -38,6 +38,7 @@ def main(args):
                 if file.startswith(dirName.split('/')[-1]) & file.endswith(".dat"):
                     os.chdir(os.path.abspath(dirName)) # we are now in the recording session folder...
                     xmlfile = glob.glob("*xml")
+                    xmlfile = xmlfile[0]
                     extractLFP(dirName,file,xmlfile,repoPath)  # if no LFP yet, we make one
 
                     # check if shank dirs exist and make them if they don't
