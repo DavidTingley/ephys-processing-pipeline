@@ -8,13 +8,13 @@ function [] = makeProbeMap(folder, xmlfile)
 %% nearest neighbor graph
 
 parameters = LoadParameters([folder]);
-warning off
+% warning off
 
-for shank = 1:parameters.nElecGps
+for shank = 1:parameters.spikeGroups.nGroups
     % make a folder for each directory
     try
         if ~exist([folder '/' num2str(shank)])
-            disp(['working on shank #' num2str(shank)])
+            disp(['working on spike group #' num2str(shank)])
         mkdir([folder '/' num2str(shank)]);
 
         channels = parameters.spikeGroups.groups{shank};
@@ -108,7 +108,7 @@ for shank = 1:parameters.nElecGps
         clear s l list c ss
         end
     catch 
-
+        warning(['did not work correctly for spike group ' shank]);
     end
 end
 end
