@@ -94,7 +94,6 @@ galry/visuals/text_visual.py
 galry/visuals/texture_visual.py
 galry/visuals/visual.py
 galry/visuals/fontmaps/__init__.py
-galry/visuals/fontmaps/__init__.pyc
 galry/visuals/fontmaps/config.bmfc
 galry/visuals/fontmaps/segoe14.fnt
 galry/visuals/fontmaps/segoe14_0.png
@@ -113,7 +112,6 @@ galry/visuals/fontmaps/segoe28_0.png
 galry/visuals/fontmaps/segoe32.fnt
 galry/visuals/fontmaps/segoe32_0.png
 galry/visuals/fontmaps/tools.py
-galry/visuals/fontmaps/tools.pyc
 klustaviewa/__init__.py
 klustaviewa.egg-info/PKG-INFO
 klustaviewa.egg-info/SOURCES.txt

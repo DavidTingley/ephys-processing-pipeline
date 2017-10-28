@@ -6,5 +6,6 @@ Home-page: https://klusta-team.github.io
 Author: Cyrille Rossant
 Author-email: rossant@github
 License: LICENSE.md
+Description-Content-Type: UNKNOWN
 Description: Spike sorting graphical interface.
 Platform: UNKNOWN

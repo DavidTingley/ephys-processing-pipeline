@@ -1,0 +1,62 @@
+
+# Install klustaviewa only 
+# Tested on ubuntu 14.04 no prior installations of miniconda/klusta
+# DTRS 10/28/2017
+
+
+# Clone DT repo with compatible miniconda and klustaviewa versions
+# cd to desired local clone location
+
+git clone https://github.com/DavidTingley/ephys-processing-pipeline
+
+
+# Install miniconda
+
+wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
+
+chmod +x Miniconda-3.7.0-Linux-x86_64.sh
+
+./Miniconda-3.7.0-Linux-x86_64.sh
+
+source ~/.bashrc
+
+reset
+
+
+# Create env for klustaviewa/klustakwik
+
+conda create -n klusta python=2.7 --yes
+
+
+# Install dependencies for klustaviewa
+
+source activate klusta
+
+pip install numpy==1.8.0
+
+pip install pyopengl
+
+pip install setuptools
+
+
+# Install klustaviewa
+
+python setup.py install
+
+
+# Open klustaviewa
+
+source deactivate
+
+source activate klusta
+
+klustaviewa
+
+
+
+
+
+
+
+# git add file.txt or gid add -A 
+# git commit 
